@@ -9,6 +9,23 @@ var usersRouter = require('./routes/users');
 var cityRouter = require('./routes/city');
 
 var app = express();
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: false
+})); 
+//Database Connection
+const dbConfig = require('./config/dbConfig');
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+mongoose.connect(dbConfig.url, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => {
+  console.log("Successfully connected to the database");    
+}).catch(err => {
+  console.log('Could not connect to the database. Exiting now...', err);
+  process.exit();
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
